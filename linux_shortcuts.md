@@ -31,7 +31,7 @@ chown root:root /etc/filename.conf
 
 ## Number_2 
 
-###Change file permission to read only for all the users for a file
+### Change file permission to read only for all the users for a file
 
 ```
 chmod 774 /etc/filename.conf
