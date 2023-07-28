@@ -1,27 +1,27 @@
 # DEVOPS SHORTCUTS FROM MY FIRST JOB (2020 VERSION)
 - [Number 1: Change owner and group owners of a file in linux](#Number_1)
-- [Change file permission to read only for all the users for a file](#Number_2)
-- [Create a Linux User with non-interactive shell](#create-a-linux-user-with-non-interactive-shell)
-- [Task 2 - Create a group](#create-a-group)
-- [Task 3 - MariaDB Troubleshooting](#mariadb-troubleshooting)
-- [Task 4 - Linux Archives](#linux-archives)
-- [Task 5 - Linux SSH Authentication](#linux-ssh-authentication)
-- [Task 6 - Linux Remote Copy](#linux-remote-copy)
-- [Task 7 - Haproxy LBR Troubleshooting](#haproxy-lbr-troubleshooting)
-- [Task 8 - Linux Run Levels](#linux-run-levels)
-- [Task 9 - Create a user](#create-a-user)
-- [Task 10 - Linux String Substitute](#linux-string-substitute)
-- [Task 11 - Create a Cron Job](#create-a-cron-job)
-- [Task 12 - Linux Banner](#linux-banner)
-- [Task 13 - Linux Services](#linux-services)
-- [Task 14 - Disable Root Login](#disable-root-login)
-- [Task 15 - Linux User Without Home](#linux-user-without-home)
-- [Task 16 - Linux User Expiry](#linux-user-expiry)
-- [Task 17 - Apache Troubleshooting](#apache-troubleshooting)
-- [Task 18 - Linux Firewalld Rules](#linux-firewalld-rules)
-- [Task 19 - NFS Troubleshooting](#nfs-troubleshooting)
-- [Task 20 - DNS Troubleshooting](#dns-troubleshooting)
-- [Task 21 - Selinux Installation](#selinux-installation)
+- [Number_2: Change file permission to read only for all the users for a file](#Number_2)
+- [Number_3: Create a Linux User with non-interactive shell](#create-a-linux-user-with-non-interactive-shell)
+- [Number 4 - Create a group](#create-a-group)
+- [Number 5 - MariaDB Troubleshooting](#mariadb-troubleshooting)
+- [Number 6 - Linux Archives](#linux-archives)
+- [Number 7 - Linux SSH Authentication](#linux-ssh-authentication)
+- [Number 8 - Linux Remote Copy](#linux-remote-copy)
+- [Number 9 - Haproxy LBR Troubleshooting](#haproxy-lbr-troubleshooting)
+- [Number 10 - Linux Run Levels](#linux-run-levels)
+- [Number 11 - Create a user](#create-a-user)
+- [Number 12 - Linux String Substitute](#linux-string-substitute)
+- [Number 13 - Create a Cron Job](#create-a-cron-job)
+- [Number 14 - Linux Banner](#linux-banner)
+- [Number 15 - Linux Services](#linux-services)
+- [Number 16 - Disable Root Login](#disable-root-login)
+- [Number 17 - Linux User Without Home](#linux-user-without-home)
+- [Number 18 - Linux User Expiry](#linux-user-expiry)
+- [Number 19 - Apache Troubleshooting](#apache-troubleshooting)
+- [Number 20 - Linux Firewalld Rules](#linux-firewalld-rules)
+- [Number 21 - NFS Troubleshooting](#nfs-troubleshooting)
+- [Number 22 - DNS Troubleshooting](#dns-troubleshooting)
+- [Number 23 - Selinux Installation](#selinux-installation)
 
 ## Number_1 
 ### Change owner and group owners of a file in linux
@@ -44,15 +44,13 @@ setfacl -m u:userx:000 /tmp/filename
 ```
 ## Create a Linux User with non-interactive shell
 
-The System admin team of **xFusionCorp Industries** has installed a backup agent tool on all app servers. As per the tool's requirements they need to create a user with a non-interactive shell.
-
-Therefore, create a user named **mark** with a non-interactive shell in the **app02** server
+Create a user with a non-interactive shell.
 
 ### Solution
 
 ```bash
 # SSH into the app server
-ssh steve@stapp02
+ssh steve@server02
 
 # Create user
 sudo useradd mark -s /sbin/nologin
@@ -66,9 +64,9 @@ exit
 
 ## Create a group
 
-There are specific access levels for users defined by the **xFusionCorp Industries** system admin team. Rather than providing access levels to every individual user, the team has decided to create groups with required access levels and add users to that groups as needed. See the following requirements:
+There are specific access levels for users defined by devops team. Rather than providing access levels to every individual user, we decided to create groups with required access levels and add users to that groups as needed. See the following requirements:
 
-a. Create a group named **nautilus_noc** in all App servers in **Stratos Datacenter**.
+a. Create a group named *new_group** in all App servers
 
 b. Add the user **stark** to **nautilus_noc** in all App servers. (create the user if not present already)
 
