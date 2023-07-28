@@ -1,5 +1,5 @@
 # DEVOPS SHORTCUTS FROM MY FIRST JOB (2020 VERSION)
-- [Change owner and group owners of a file in linux](#Change-owner-and-group-owners-of-a-file-in-linux)
+- [Number 1: Change owner and group owners of a file in linux](#Number_1)
 - [Change file permission to read only for all the users for a file](#Number_2)
 - [Create a Linux User with non-interactive shell](#create-a-linux-user-with-non-interactive-shell)
 - [Task 2 - Create a group](#create-a-group)
@@ -23,7 +23,8 @@
 - [Task 20 - DNS Troubleshooting](#dns-troubleshooting)
 - [Task 21 - Selinux Installation](#selinux-installation)
 
-## Change owner and group owners of a file in linux
+## Number_1 
+### Change owner and group owners of a file in linux
 
 ```
 chown root:root /etc/filename.conf
