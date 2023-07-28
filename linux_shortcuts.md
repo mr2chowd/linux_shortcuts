@@ -348,35 +348,29 @@ sudo /etc/passwd | grep anita
 
 ## Linux String Substitute
 
-The backup server in the **Stratos DC** contains several template XML files used by the Nautilus application. However, these template XML files must be populated with valid data before they can be used. One of the daily tasks of a system admin working in the xFusionCorp industries is to apply string and file manipulation commands!
-
-Replace all occurrences of the string **About** to **Cloud** on the XML file **/root/nautilus.xml** located in the backup server.
+Replace all occurrences of the string **something** to **execute** on the XML file **/root/some.xml** located in the backup server.
 
 ### Solution
 
 ```bash
-# SSH to the Backup server
-ssh clint@stbkp01
+# SSH to the server
+ssh clint@someserver
 
-# Check About text in the xml file
-sudo cat /root/nautilus.xml | grep About
+# Check About text in the XML file
+sudo cat /root/some.xml | grep About
 
-# Check occurrence  of About text in the xml file as there are few in a different case
-sudo cat /root/nautilus.xml | grep About | wc -l
+# Check the occurrence  of About text in the XML file as there are few in a different case
+sudo cat /root/some.xml | grep About | wc -l
 
 # Replace
-sudo sed -i 's/About/Cloud/g' /etc/nautilus.xml
+sudo sed -i 's/something/execute/g' /etc/some.xml
 
 # i - By default sed is case-sensitive, specify -i for case-insensitive search
 # s/ - search
-# /g - all occurances
-# Ref - https://www.geeksforgeeks.org/sed-command-in-linux-unix-with-examples/
+# /g - all occurrences
 
-# Check again if the replace was successful
+# Check again if the replacement was successful
 sudo cat /root/nautilus.xml | grep Cloud | WC -l
-
-# Exit from backup server
-exit
 ```
 
 ## Create a Cron Job
