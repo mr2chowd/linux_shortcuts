@@ -55,6 +55,15 @@ ssh steve@server02
 # Create user
 sudo useradd mark -s /sbin/nologin
 
+# The -s flag is used to specify the login shell for the user being created. In this case, the login shell for the user "mark" is set to "/sbin/nologin".
+
+# The login shell is the program that runs when a user logs into the system. It provides the user with an interface to interact with the operating system. Common # login shells include Bash, Zsh, and /sbin/nologin.
+
+# The "/sbin/nologin" shell is a special shell that allows a user to be created without granting them the ability to log in to the system. Instead of providing a # full interactive shell, using "/sbin/nologin" as the login shell typically results in the user being immediately disconnected after logging in, effectively # preventing them from accessing the command-line interface or any other interactive features.
+
+
+
+
 # Check if default shell is correctly set
 sudo cat /etc/passwd | grep mark
 
