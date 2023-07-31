@@ -68,7 +68,7 @@ There are specific access levels for users defined by devops team. Rather than p
 
 a. Create a group named *new_group** in all App servers
 
-b. Add the user **stark** to **nautilus_noc** in all App servers. (create the user if not present already)
+b. Add the user **stark** to **verisk_streaming_noc** in all App servers. (create the user if not present already)
 
 ### Solution
 
@@ -76,7 +76,7 @@ b. Add the user **stark** to **nautilus_noc** in all App servers. (create the us
 
 ```bash
 # SSH into the app server 1
-ssh tony@stapp01
+ssh tony@application01
 
 # Check if user exists
 sudo id stark
@@ -84,16 +84,16 @@ sudo id stark
 sudo cat /etc/passwd | grep stark
 
 # Add the group
-groupadd nautilus_noc
+groupadd verisk_streaming_noc
 
 # Add the user (if it does not exists)
-useradd -G nautilus_noc stark
+useradd -G verisk_streaming_noc stark
 
 # Run Step 3 to check if the user created successfully and correct group is assigned
 
 # Modify the user (optional only if the user existed before)
-usermod -aG nautilus_noc stark # Will change users primary group
-usermod -g nautilus_noc stark # Will add the user to a secondary group
+usermod -aG verisk_streaming_noc stark # Will change users primary group
+usermod -g verisk_streaming_noc stark # Will add the user to a secondary group
 
 # Exit from the app server
 exit
@@ -103,7 +103,7 @@ exit
 
 ## MariaDB Troubleshooting
 
-There is a critical issue going on with the **Nautilus** application in **Stratos DC**. The production support team identified that the application is unable to connect to the database. After digging into the issue, the team found that mariadb service is down on the database server.
+There is a critical issue going on with the **verisk_streaming** application in **Vancouver**. The production support team identified that the application is unable to connect to the database. After digging into the issue, the team found that mariadb service is down on the database server.
 
 Look into the issue and fix the same.
 
@@ -154,7 +154,7 @@ exit
 
 ## Linux Archives
 
-On **Nautilus** storage server in **Stratos DC** there is a storage location **/data** which is used by different developers to keep their data (no confidential data). One of the developers **ravi** has raised a ticket and asked for a copy of his/her data present in **/data/ravi** directory on storage server. **/home** is an FTP location on storage server where developers can download their data. Below are the instructions shared by the system admin team to accomplish the task:
+On **verisk_streaming** storage server in **Vancouver DC** there is a storage location **/data** which is used by different developers to keep their data (no confidential data). One of the developers **ravi** has raised a ticket and asked for a copy of his/her data present in **/data/ravi** directory on storage server. **/home** is an FTP location on storage server where developers can download their data. Below are the instructions shared by the system admin team to accomplish the task:
 
 a. Make a **ravi.tar.gz** compressed archive of **/data/ravi** directory and move the archive to **/home** directory on Storage Server.
 
@@ -162,7 +162,7 @@ a. Make a **ravi.tar.gz** compressed archive of **/data/ravi** directory and mov
 
 ```bash
 # SSH to storage server 
-ssh natasha@ststor01
+ssh natasha@storage1server
 
 # Check data folder and see if a folder called ravi exists
 ls -l  /data/
@@ -187,7 +187,7 @@ exit
 
 ## Linux SSH Authentication
 
-The system admins team of **xFusionCorp Industries** has set up some scripts on **jump host** that run on regular intervals and perform operations on all app servers in **Stratos Datacenter**. To make these scripts work properly we need to make sure **thor** user on jump host haspassword-less SSH access to all app servers through their respective sudo users. Based on the requirements, perform the following:
+The system admins team of **Verisk** has set up some scripts on **jump host** that run on regular intervals and perform operations on all app servers in **Vancouver Datacenter**. To make these scripts work properly we need to make sure **thor** user on jump host haspassword-less SSH access to all app servers through their respective sudo users. Based on the requirements, perform the following:
 
 Set up a password-less authentication for user **thor** on jump host to all app servers through their respective sudo users.
 
@@ -204,15 +204,15 @@ ssh-keygen -t rsa -b 4096
 # Check .ssh directory. You will find two files id_rsa and id_rsa.pub		
 ll /home/thor/.ssh
 		
-# Copy public key to all the app servers. If you get key not found or ID not found then try ssh-copy-id -i /home/thor/.ssh/id_rsa.pub tony@stapp01
-ssh-copy-id tony@stapp01
-ssh-copy-id steve@stapp02
-ssh-copy-id banner@stapp03
+# Copy public key to all the app servers. If you get key not found or ID not found then try ssh-copy-id -i /home/thor/.ssh/id_rsa.pub tony@application01
+ssh-copy-id tony@application01
+ssh-copy-id steve@application02
+ssh-copy-id banner@application03
 
 # Verify. You should be able to login without specifying password
-ssh tony@stapp01
-ssh steve@stapp02
-ssh banner@stapp03
+ssh tony@application01
+ssh steve@application02
+ssh banner@application03
 
 # Exit from app servers
 exit
@@ -220,29 +220,29 @@ exit
 
 ## Linux Remote Copy
 
-One of the **Nautilus** developers has copied confidential data on the jump host in **Stratos DC**. That data must be copied to one of the app servers. Because developers do not have access to app servers, they asked the system admins team to accomplish the task for them.
+One of the **verisk_streaming** developers has copied confidential data on the jump host in **Vancouver DC**. That data must be copied to one of the app servers. Because developers do not have access to app servers, they asked the system admins team to accomplish the task for them.
 
-Copy **/tmp/nautilus.txt.gpg** file from jump server to **App Server 3** at location **/home/code**.
+Copy **/tmp/verisk_streaming.txt.gpg** file from jump server to **App Server 3** at location **/home/code**.
 
 ### Solution
 
 ```bash
 # Check existence of file in the specified directory.
 ls -l /tmp
-sudo cat /tmp/nautilus.txt.gpg
+sudo cat /tmp/verisk_streaming.txt.gpg
 
 # Copy the file from the jump server to any directory in the App Server 3 - using scp
 # thor user doesn't have permissions to copy files to the /home directory of the App Server. 
 # So we will first copy the file to the /temp directory on the App server.
-sudo scp -r /tmp/nautilus.txt.gpg banner@stapp03:/tmp
+sudo scp -r /tmp/verisk_streaming.txt.gpg banner@application03:/tmp
 
 # SSH to the app server and move the file from /tmp directory to the required directory.
-ssh banner@stapp03
-sudo mv /tmp/nautilus.txt.gpg /home/code
+ssh banner@application03
+sudo mv /tmp/verisk_streaming.txt.gpg /home/code
 
 # Verify that file is moved successfully to the target directory.
 ls -l /home/code/
-sudo cat /tmp/nautilus.txt.gpg
+sudo cat /tmp/verisk_streaming.txt.gpg
 
 # Exit from the app server
 exit
@@ -250,9 +250,9 @@ exit
 
 ## Haproxy LBR Troubleshooting
 
-**xFusionCorp Industries** has an application running on **Nautlitus** infrastructure in **Stratos Datacenter**. The monitoring tool recognised that there is an issue with the **haproxy** service on **LBR** server. That needs to fixed to make the application work properly.
+**Verisk** has an application running on **verisk_streaming** infrastructure in **Vancouver Datacenter**. The monitoring tool recognised that there is an issue with the **haproxy** service on **LBR** server. That needs to fixed to make the application work properly.
 
-Troubleshoot and fix the issue, and make sure **haproxy** service is running on **Nautilus** LBR server.
+Troubleshoot and fix the issue, and make sure **haproxy** service is running on **verisk_streaming** LBR server.
 
 ### Solution
 
@@ -292,9 +292,9 @@ sudo systemctl enable haproxy
 
 ## Linux Run Levels
 
-New tools have been installed on the app server in **Stratos Datacenter**. Some of these tools can only be managed from the graphical user interface. Therefore, there are requirements for these app servers.
+New tools have been installed on the app server in **Vancouver Datacenter**. Some of these tools can only be managed from the graphical user interface. Therefore, there are requirements for these app servers.
 
-On all App servers in **Stratos Datacenter** change the default runlevel so that they can boot in **GUI (graphical user interface)** by default.
+On all App servers in **Vancouver Datacenter** change the default runlevel so that they can boot in **GUI (graphical user interface)** by default.
 
 ### Solution
 
@@ -302,7 +302,7 @@ On all App servers in **Stratos Datacenter** change the default runlevel so that
 
 ```bash
 # SSH into the app server
-ssh tony@stapp01
+ssh tony@application01
 
 # Check current run level
 sudo systemctl get-default
@@ -322,9 +322,9 @@ systemctl enable graphical.target
 
 ## Create a user
 
-For some security reasons **xFusionCorp Industries** security team has decided to use custom Apache users for each web application hosted there rather than its default user. Since this is going to be the Apache user so it should not use the default home directory. Create the user as per requirements given below:
+For some security reasons **Verisk** security team has decided to use custom Apache users for each web application hosted there rather than its default user. Since this is going to be the Apache user so it should not use the default home directory. Create the user as per requirements given below:
 
-a. Create a user named **anita** on the **App server 1** in Stratos Datacenter.
+a. Create a user named **anita** on the **App server 1** in Vancouver Datacenter.
 
 b. Set UID to **1619** and its home directory to **/var/www/anita**
 
@@ -332,7 +332,7 @@ b. Set UID to **1619** and its home directory to **/var/www/anita**
 
 ```bash
 #  SSH to App server
-ssh tony@stapp01
+ssh tony@application01
 
 # Add the user.
 sudo useradd -m -d /var/www/anita anita -u 1619
@@ -370,14 +370,14 @@ sudo sed -i 's/something/execute/g' /etc/some.xml
 # /g - all occurrences
 
 # Check again if the replacement was successful
-sudo cat /root/nautilus.xml | grep Cloud | WC -l
+sudo cat /root/verisk_streaming.xml | grep Cloud | WC -l
 ```
 
 ## Create a Cron Job
 
-The **Nautilus** system admins team has prepared scripts to automate several day-to-day tasks. They want them to be deployed on all app servers in **Stratos DC** on a set schedule. Before that they need to test similar functionality with a sample cron job. Therefore, perform the steps below:
+The **verisk_streaming** system admins team has prepared scripts to automate several day-to-day tasks. They want them to be deployed on all app servers in **Vancouver DC** on a set schedule. Before that they need to test similar functionality with a sample cron job. Therefore, perform the steps below:
 
-a. Install **cronie** package on all **Nautilus** app servers and start **crond** service.
+a. Install **cronie** package on all **verisk_streaming** app servers and start **crond** service.
 
 b. Add a cron ***/5 * * * * echo hello > /tmp/cron_text** for **root** user.
 
@@ -387,7 +387,7 @@ b. Add a cron ***/5 * * * * echo hello > /tmp/cron_text** for **root** user.
 
 ```bash
 # SSH into app server 1
-ssh tony@stapp01
+ssh tony@application01
 
 # Switch to root user
 # sudo su -
@@ -422,9 +422,9 @@ cat /var/spool/cron/root
 
 ## Linux Banner
 
-During the monthly compliance meeting, it was pointed out that several servers in the **Stratos DC** do not have a valid banner. The security team has provided serveral approved templates which should be applied to the servers to maintain compliance. These will be displayed to the user upon a successful login.
+During the monthly compliance meeting, it was pointed out that several servers in the **Vancouver DC** do not have a valid banner. The security team has provided serveral approved templates which should be applied to the servers to maintain compliance. These will be displayed to the user upon a successful login.
 
-Update the **message of the day** on all application and db servers for **Nautilus**. Make use of the approved template located at **/root/nautilus_banner** on jump host
+Update the **message of the day** on all application and db servers for **verisk_streaming**. Make use of the approved template located at **/root/verisk_streaming_banner** on jump host
 
 ### Solution
 
@@ -432,16 +432,16 @@ Update the **message of the day** on all application and db servers for **Nautil
 
 ```bash
 # Check banner file defails on host
-ll -lsd /tmp/nautilus_banner
+ll -lsd /tmp/verisk_streaming_banner
 
 # Copy banner to the /tmp directory on app server 1
-sudo scp -r /root/nautilus_banner tony@stapp01:/tmp
+sudo scp -r /root/verisk_streaming_banner tony@application01:/tmp
 
 # Run move command on the app server 1
-ssh -t tony@stapp01 'sudo mv /tmp/nautilus_banner /etc/motd'
+ssh -t tony@application01 'sudo mv /tmp/verisk_streaming_banner /etc/motd'
 
 # Validate
-ssh tony@stapp01
+ssh tony@application01
 
 # You should see the banner now
 
@@ -451,7 +451,7 @@ sudo yum install openssh-clients
 
 ## Linux Services
 
-As per details shared by the development team, the new application release has some dependencies on the back end. There are some packages/services that need to be installed on all app servers under **Stratos Datacenter**. As per requirements please perform the following steps:
+As per details shared by the development team, the new application release has some dependencies on the back end. There are some packages/services that need to be installed on all app servers under **Vancouver Datacenter**. As per requirements please perform the following steps:
 
 a. Install **httpd** package on all the application servers.
 
@@ -463,7 +463,7 @@ b. Once installed, make sure it is enabled to start during boot.
 
 ```bash
 # SSH into app server 1
-ssh tony@stapp01
+ssh tony@application01
 
 # Switch user to root
 sudo su -
@@ -489,9 +489,9 @@ exit
 
 ## Disable Root Login
 
-After doing some security audits of servers, **xFusionCorp Industries** security team has implemented some new security policies. One of them is to disable direct root login through SSH.
+After doing some security audits of servers, **Verisk** security team has implemented some new security policies. One of them is to disable direct root login through SSH.
 
-Disable direct SSH root login on all app servers in **Stratos Datacenter**.
+Disable direct SSH root login on all app servers in **Vancouver Datacenter**.
 
 ### Solution
 
@@ -499,7 +499,7 @@ Disable direct SSH root login on all app servers in **Stratos Datacenter**.
 
 ```bash
 # SSH to app server 1
-ssh tony@stapp01
+ssh tony@application01
 
 # Edit the /etc/ssh/sshd_config and change change "PermitRootLogin yes" to "PermitRootLogin no", Uncomment if commented
 sudo vi /etc/ssh/sshd_config
@@ -519,7 +519,7 @@ exit
 
 ## Linux User Without Home
 
-The system admins team of **xFusionCorp Industries** has set up a new tool on all app servers, as they have a requirement to create a service user account that will be used by that tool. They are finished with all apps except for **App 1** in **Stratos Datacenter**.
+The system admins team of **Verisk** has set up a new tool on all app servers, as they have a requirement to create a service user account that will be used by that tool. They are finished with all apps except for **App 1** in **Vancouver Datacenter**.
 
 Create a user named **kareem** in **App Server 1** without a home directory.
 
@@ -527,7 +527,7 @@ Create a user named **kareem** in **App Server 1** without a home directory.
 
 ```bash
 # SSH into App server 1
-ssh tony@stapp01
+ssh tony@application01
 
 # Create user without a home directory
 sudo useradd -M kareem
@@ -541,15 +541,15 @@ exit
 
 ## Linux User Expiry
 
-A developer **John** has been assigned **Nautilus** project temporarily as a backup resource. As a temporary resource for this project, we need a temporary user for **John**. It’s a good idea to create a user with a set expiration date so that the user will not be able to access servers beyond that point.
+A developer **John** has been assigned **verisk_streaming** project temporarily as a backup resource. As a temporary resource for this project, we need a temporary user for **John**. It’s a good idea to create a user with a set expiration date so that the user will not be able to access servers beyond that point.
 
-Therefore, create a user named **john** on the **App Server 1**. Set **expiry date** to **2021-12-07** in **Stratos Datacenter**. Make sure the user is created as per standard and is in lowercase.
+Therefore, create a user named **john** on the **App Server 1**. Set **expiry date** to **2021-12-07** in **Vancouver Datacenter**. Make sure the user is created as per standard and is in lowercase.
 
 ### Solution
 
 ```bash
 # SSH to App server 1
-ssh tony@stapp01
+ssh tony@application01
 
 # Add user with expiry
 sudo useradd -e 2021-12-07 john 
@@ -566,11 +566,11 @@ exit
 
 ## Apache Troubleshooting
 
-**xFusionCorp Industries** utilizes monitoring tools to check the status of every service, application, etc. running on the systems. The monitoring system identified that Apache service is not running on some of the **Nautilus Application** Servers in **Stratos Datacenter**.
+**Verisk** utilizes monitoring tools to check the status of every service, application, etc. running on the systems. The monitoring system identified that Apache service is not running on some of the **verisk_streaming Application** Servers in **Vancouver Datacenter**.
 
-Identify the faulty **Nautilus Application Servers** and fix the issue. Also, make sure Apache service is up and running on all **Nautilus Application Servers**. Do not try to stop any kind of firewall that is already running.
+Identify the faulty **verisk_streaming Application Servers** and fix the issue. Also, make sure Apache service is up and running on all **verisk_streaming Application Servers**. Do not try to stop any kind of firewall that is already running.
 
-Apache is running on **5001** port on all **Nautilus Application Servers** and its document root must be **/var/www/html** on all app servers.
+Apache is running on **5001** port on all **verisk_streaming Application Servers** and its document root must be **/var/www/html** on all app servers.
   
 Finally you can test from **jump host** using curl command to access Apache on all app servers and it should work fine. E.g. **curl http://172.16.238.10:5001/**
 
@@ -580,7 +580,7 @@ Finally you can test from **jump host** using curl command to access Apache on a
 
 ```bash
 # SSH into App Server 1
-ssh tony@stapp01
+ssh tony@application01
 
 # Switch to root user
 sudo su -
@@ -622,7 +622,7 @@ curl http://172.16.238.10:5001/
 
 ## Linux Firewalld Rules
 
-The **Nautilus** system admins team recently deployed a web UI application for their backup utility running on the **Nautilus backup server** in **Stratos Datacenter**. The application is running on port **6200**. They have **firewalld** installed on that server. The requirements that have come up include the following:
+The **verisk_streaming** system admins team recently deployed a web UI application for their backup utility running on the **verisk_streaming backup server** in **Vancouver Datacenter**. The application is running on port **6200**. They have **firewalld** installed on that server. The requirements that have come up include the following:
 
 Open all incoming connection on **6200/tcp** port. Zone should be **public**.
 
@@ -659,7 +659,7 @@ exit
 
 ## NFS Troubleshooting
 
-The **Nautilus** production support team was trying to fix issues with their storage server. The storage server has a shared directory **/opt**, which is mounted on all app servers at location **/var/www/html** so that whatever data they store on storage server under **/opt** can be shared among all app servers. Somehow NFS server is broken and having some issues.
+The **verisk_streaming** production support team was trying to fix issues with their storage server. The storage server has a shared directory **/opt**, which is mounted on all app servers at location **/var/www/html** so that whatever data they store on storage server under **/opt** can be shared among all app servers. Somehow NFS server is broken and having some issues.
 
 Identify the root cause of the issue and fix it to make sure sharing works fine among all app servers and storage server.
 
@@ -667,7 +667,7 @@ Identify the root cause of the issue and fix it to make sure sharing works fine 
 
 ```bash
 # SSH to the Storage Server.
-ssh natasha@ststor01
+ssh natasha@storage1server
 
 # Switch to root user
 sudo su -
@@ -694,22 +694,22 @@ systemctl start nfs-server && systemctl start rpcbind
 exportfs -r
 
 # Print and check the list of exported filesystems.
-showmount -e ststor01
+showmount -e storage1server
 
 # Connect via SSH to each App server. For each one, do the next steps.
 
-ssh tony@stapp01    # App server 1
-ssh steve@stapp02   # App server 2
-ssh banner@stapp03  # App server 3
+ssh tony@application01    # App server 1
+ssh steve@application02   # App server 2
+ssh banner@application03  # App server 3
 
 # Start nfs-server and rpcbind services
 systemctl start nfs-server && systemctl start rpcbind
 
 # Ensure App server sees the filesystem and the correct shared shared directory(showmount).
-showmount -e ststor01
+showmount -e storage1server
 
 # Mount the directory into the App server
-mount -t nfs ststor01:/opt /var/www/html
+mount -t nfs storage1server:/opt /var/www/html
 
 # Verify directory is mounted.
 df -h
@@ -730,7 +730,7 @@ exit
 
 ## DNS Troubleshooting
 
-The system admins team of xFusionCorp Industries has noticed intermittent issues with DNS resolution in several apps . **App Server 3** in **Stratos Datacenter** is having some DNS resolution issues, so we want to add some additional DNS nameservers on this server.
+The system admins team of Verisk has noticed intermittent issues with DNS resolution in several apps . **App Server 3** in **Vancouver Datacenter** is having some DNS resolution issues, so we want to add some additional DNS nameservers on this server.
 
 As a temporary fix we have decided to go with Google public DNS. Please make appropriate changes on this server.
 
@@ -738,7 +738,7 @@ As a temporary fix we have decided to go with Google public DNS. Please make app
 
 ```bash
 # SSH to app server 3.
-ssh banner@stapp03
+ssh banner@application03
 
 # Verify if DNS is really not working by doing a ping test.
 ping www.google.com
@@ -756,15 +756,15 @@ exit
 
 ## Selinux Installation
 
-The xFusionCorp Industries security team recently did a security audit of their infrastructure and came up with ideas to improve the application and server security. They decided to use SElinux for an additional security layer. They are still planning how they will implement it; however, they have decided to start testing with app servers, so based on the recommendations they have the following requirements:
+The Verisk security team recently did a security audit of their infrastructure and came up with ideas to improve the application and server security. They decided to use SElinux for an additional security layer. They are still planning how they will implement it; however, they have decided to start testing with app servers, so based on the recommendations they have the following requirements:
 
-Install the required packages of SElinux on **App server 3** in **Stratos Datacenter** and disable it permanently for now; it will be enabled after making some required configuration changes on this host. Don't worry about rebooting the server as there is already a reboot scheduled for tonight's maintenance window. Also ignore the status of SElinux command line right now; the final status after reboot should be **disabled**.
+Install the required packages of SElinux on **App server 3** in **Vancouver Datacenter** and disable it permanently for now; it will be enabled after making some required configuration changes on this host. Don't worry about rebooting the server as there is already a reboot scheduled for tonight's maintenance window. Also ignore the status of SElinux command line right now; the final status after reboot should be **disabled**.
 
 ### Solution
 
 ```bash
 # SSH to the App Server 3
-ssh banner@stapp03
+ssh banner@application03
 
 # Install Selinux
 sudo yum install selinux*
